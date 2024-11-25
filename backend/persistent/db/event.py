@@ -1,7 +1,7 @@
 from persistent.db.base import Base, WithId
 from sqlalchemy import Column, Text, DateTime
 
-
+# таблица мероприятий
 class Event(Base, WithId):
     __tablename__ = "event"
 

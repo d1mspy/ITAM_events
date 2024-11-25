@@ -3,6 +3,7 @@ from infrastructure.db.connect import sqlite_connection
 from sqlalchemy import insert
 from datetime import datetime
 
+# класс для взаимодействия с бд мероприятий
 class EventRepository:
     def __init__(self):
         self._sessionmaker = sqlite_connection()
