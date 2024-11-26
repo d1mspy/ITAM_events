@@ -53,4 +53,4 @@ async def delete_event(event_id: str = Path(...)) -> None:
     """
     Удаление мероприятия
     """
-    ...
+    await event.delete_event(event_id)

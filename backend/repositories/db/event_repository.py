@@ -1,6 +1,6 @@
 from persistent.db.event import Event
 from infrastructure.db.connect import sqlite_connection
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, update, delete
 from datetime import datetime
 
 # класс для взаимодействия с бд мероприятий
@@ -57,4 +57,8 @@ class EventRepository:
         """
         DELETE FROM event WHERE id = {event_id}
         """
-        ...
+        stmp = delete(Event).where(Event.id == event_id)
+
+        async with self._sessionmaker() as session:
+            await session.execute(stmp)
+            await session.commit()
