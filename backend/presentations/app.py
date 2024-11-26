@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, status, HTTPException
 from repositories.db.event_repository import EventRepository
 from datetime import datetime
 
@@ -28,11 +28,13 @@ async def post_event(name: str, year: int, month: int, day: int, hour: int, minu
 
 
 @app.get("/events/{event_id}")
-async def get_event(event_id: str = Path(...)) -> dict:
+async def get_event(event_id: str = Path(...)) -> dict | None:
     """
     получение информации о мероприятии по id
     """
     info = await event.get_event(event_id)
+    if info is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="мероприятие не найдено")
 
     return info
 
@@ -54,3 +56,13 @@ async def delete_event(event_id: str = Path(...)) -> None:
     Удаление мероприятия
     """
     await event.delete_event(event_id)
+
+
+@app.get("/events")
+async def get_all_events() -> list | None:
+    """
+    Получение информации о всех мероприятиях
+    """
+    info = await event.get_all_events()
+
+    return info

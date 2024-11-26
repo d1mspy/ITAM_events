@@ -22,7 +22,7 @@ class EventRepository:
             await session.commit()
 
 
-    async def get_event(self, event_id: str) -> dict:
+    async def get_event(self, event_id: str) -> dict | None:
         """
         SELECT * FROM event WHERE id = {event_id}
         """
@@ -31,12 +31,12 @@ class EventRepository:
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
 
-        row = list(resp.fetchone())
-        keys = ["id", "event_name", "event_datetime", "event_content", "event_tags"]
-
-        if row is None:
+        try:
+            row = list(resp.fetchone())
+        except Exception:
             return None
-    
+
+        keys = ["id", "event_name", "event_datetime", "event_content", "event_tags"]
         info = dict(zip(keys, row))
 
         return info
@@ -62,3 +62,25 @@ class EventRepository:
         async with self._sessionmaker() as session:
             await session.execute(stmp)
             await session.commit()
+
+
+    async def get_all_events(self) -> list | None:
+        """
+        SELECT * FROM event
+        """
+        stmp = select(Event.id, Event.event_name, Event.event_datetime, Event.event_content, Event.event_tags)
+
+        async with self._sessionmaker() as session:
+            resp = await session.execute(stmp)
+            await session.commit()
+        
+        try:
+            row = list(resp.fetchall())
+        except Exception:
+            return None
+        
+        keys = ["id", "event_name", "event_datetime", "event_content", "event_tags"]
+        info = [dict(zip(keys, item)) for item in row]
+
+        return info
+        
