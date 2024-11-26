@@ -4,7 +4,7 @@ import uuid
 
 Base = declarative_base()
 
-# возваращает uuid в строком виде
+# возваращает uuid в строковом виде
 def _uuid4_to_str() -> str:
     return str(uuid.uuid4())
 
