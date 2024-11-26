@@ -7,12 +7,6 @@ app = FastAPI(
     description="микросервис для управления мероприятиями на платформе ITAM"
 )
 
-
-@app.get("/test")
-def test() -> str:
-    return "itam"
-
-
 event = EventRepository()
 
 
