@@ -5,7 +5,10 @@ from sqlalchemy import Column, Text, DateTime
 class Event(Base, WithId):
     __tablename__ = "event"
 
-    event_name = Column(Text, nullable=False)
-    event_datetime = Column(DateTime, nullable=False)
-    event_content = Column(Text)
-    event_tags = Column(Text)
+    name = Column(Text, nullable=False)
+    start_datetime = Column(DateTime, nullable=False)
+    end_datetime = Column(DateTime,  nullable=False)
+    place = Column(Text, nullable=False)
+    content = Column(Text)
+    category = Column(Text)
+    tags = Column(Text)

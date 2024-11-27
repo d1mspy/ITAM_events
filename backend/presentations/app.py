@@ -11,14 +11,18 @@ event = EventRepository()
 
 
 @app.post("/events")
-async def post_event(name: str, year: int, month: int, day: int, hour: int, minute: int, content: str, tags: str) -> None:
+async def post_event(name: str,
+                     start_year: int, start_month: int, start_day: int, start_hour: int, start_minute: int, 
+                     end_year: int, end_month: int, end_day: int, end_hour: int, end_minute: int, 
+                     place: str, content: str, category: str, tags: str) -> None:
     """
     создание мероприятия
     """
 
-    event_datetime = datetime(year, month, day, hour, minute)
+    start_datetime = datetime(start_year, start_month, start_day, start_hour, start_minute)
+    end_datetime = datetime(end_year, end_month, end_day, end_hour, end_minute)
     
-    await event.post_event(name, event_datetime, content, tags)
+    await event.post_event(name, start_datetime, end_datetime, place, content, category, tags)
 
 
 @app.get("/events/{event_id}")
@@ -33,15 +37,19 @@ async def get_event(event_id: str = Path(...)) -> dict | None:
     return info
 
 
-@app.put("/events/{event_id}")
-async def put_event(name: str, year: int, month: int, day: int, hour: int, minute: int, content: str, tags: str, event_id: str = Path(...)) -> None:
+@app.put("/events/{id}")
+async def put_event(name: str,
+                    start_year: int, start_month: int, start_day: int, start_hour: int, start_minute: int, 
+                    end_year: int, end_month: int, end_day: int, end_hour: int, end_minute: int, 
+                    place: str, content: str, category: str, tags: str, id: str = Path(...)) -> None:
     """
     обновление информации о мероприятии
     """
 
-    event_datetime = datetime(year, month, day, hour, minute)
+    start_datetime = datetime(start_year, start_month, start_day, start_hour, start_minute)
+    end_datetime = datetime(end_year, end_month, end_day, end_hour, end_minute)
 
-    await event.put_event(event_id, name, event_datetime, content, tags)
+    await event.put_event(id, name, start_datetime, end_datetime, place, content, category, tags)
 
 
 @app.delete("/events/{event_id}")

@@ -10,12 +10,15 @@ class EventRepository:
         self._sessionmaker = sqlite_connection()
 
 
-    async def post_event(self, name: str, event_datetime: datetime, content: str, tags: str) -> None:
+    async def post_event(self, name: str, start_datetime: datetime, end_datetime: datetime, 
+                         place: str, content: str, category: str, tags: str) -> None:
         """
-        INSERT INTO event(event_name, event_datetime, event_content, event_tags) VALUES ({name}, {datetime}, {content}, {tags})
+        INSERT INTO event(name, start_datetime, end_datetime, place, content, category, tags)
+        VALUES ({name}, {start_datetime}, {end_datetime}, {place}, {content}, {category}, {tags})
         """
 
-        stmp = insert(Event).values({"event_name": name, "event_datetime": event_datetime, "event_content": content, "event_tags": tags})
+        stmp = insert(Event).values({"name": name, "start_datetime": start_datetime, "end_datetime": end_datetime, 
+                                     "place": place, "content": content, "category": category, "tags": tags})
 
         async with self._sessionmaker() as session:
             await session.execute(stmp)
@@ -26,7 +29,8 @@ class EventRepository:
         """
         SELECT * FROM event WHERE id = {event_id}
         """
-        stmp = select(Event.id, Event.event_name, Event.event_datetime, Event.event_content, Event.event_tags).where(Event.id == event_id)
+        stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime, Event.place, 
+                      Event.content, Event.category, Event.tags).where(Event.id == event_id)
 
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
@@ -36,17 +40,22 @@ class EventRepository:
         except Exception:
             return None
 
-        keys = ["id", "event_name", "event_datetime", "event_content", "event_tags"]
+        keys = ["id", "name", "start_datetime", "end_datetime", "place", "content", "category", "tags"]
         info = dict(zip(keys, row))
 
         return info
     
 
-    async def put_event(self, event_id: str, name: str, event_datetime: datetime, content: str, tags: str) -> None:
+    async def put_event(self, id: str, name: str, start_datetime: datetime, end_datetime: datetime, 
+                        place: str, content: str, category: str, tags: str) -> None:
         """
-        UPDATE event SET event_name = {name}, event_datetime = {datetime}, event_content = {content}, event_tags = {tags} WHERE id = {event_id}
+        UPDATE event SET 
+        name = {name}, start_datetime = {start_datetime}, end_datetime = {end_datetime}, 
+        place = {place}, content = {content}, category = {category}, tags = {tags} 
+        WHERE id = {event_id}
         """
-        stmp = update(Event).values({"event_name": name, "event_datetime": event_datetime, "event_content": content, "event_tags": tags}).where(Event.id == event_id)
+        stmp = update(Event).values({"name": name, "start_datetime": start_datetime, "end_datetime": end_datetime, 
+                                    "place": place, "content": content, "category": category, "tags": tags}).where(Event.id == id)
 
         async with self._sessionmaker() as session:
             await session.execute(stmp)
@@ -68,7 +77,8 @@ class EventRepository:
         """
         SELECT * FROM event
         """
-        stmp = select(Event.id, Event.event_name, Event.event_datetime, Event.event_content, Event.event_tags)
+        stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime,
+                      Event.place, Event.content, Event.category, Event.tags)
 
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
@@ -79,7 +89,7 @@ class EventRepository:
         except Exception:
             return None
         
-        keys = ["id", "event_name", "event_datetime", "event_content", "event_tags"]
+        keys = ["id", "name", "start_datetime", "end_datetime", "place", "content", "category", "tags"]
         info = [dict(zip(keys, item)) for item in row]
 
         return info
