@@ -25,12 +25,12 @@ async def post_event(name: str,
     await event.post_event(name, start_datetime, end_datetime, place, content, category, tags)
 
 
-@app.get("/events/{event_id}")
-async def get_event(event_id: str = Path(...)) -> dict | None:
+@app.get("/events/{id}")
+async def get_event(id: str = Path(...)) -> dict | None:
     """
     получение информации о мероприятии по id
     """
-    info = await event.get_event(event_id)
+    info = await event.get_event(id)
     if info is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="мероприятие не найдено")
 
@@ -52,12 +52,12 @@ async def put_event(name: str,
     await event.put_event(id, name, start_datetime, end_datetime, place, content, category, tags)
 
 
-@app.delete("/events/{event_id}")
-async def delete_event(event_id: str = Path(...)) -> None:
+@app.delete("/events/{id}")
+async def delete_event(id: str = Path(...)) -> None:
     """
     Удаление мероприятия
     """
-    await event.delete_event(event_id)
+    await event.delete_event(id)
 
 
 @app.get("/events")
