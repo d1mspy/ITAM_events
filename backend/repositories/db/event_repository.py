@@ -8,11 +8,10 @@ from datetime import datetime
 # класс для взаимодействия с бд мероприятий
 class EventRepository:
 
-    # подключение к sqlite
     def __init__(self):
         self._sessionmaker = sqlite_connection()
 
-    # создание мероприятия
+
     async def post_event(self, name: str, start_datetime: datetime, end_datetime: datetime, 
                          place: str, content: str, category: str, tags: str) -> None:
         """
@@ -26,6 +25,7 @@ class EventRepository:
         async with self._sessionmaker() as session:
             await session.execute(stmp) 
             await session.commit()
+
 
 
     async def get_event(self, event_id: str) -> dict | None:
@@ -48,7 +48,7 @@ class EventRepository:
 
         return info
     
-    # обновление информации о мероприятии 
+
     async def put_event(self, id: str, name: str, start_datetime: datetime, end_datetime: datetime, 
                         place: str, content: str, category: str, tags: str) -> None:
         """
@@ -69,12 +69,12 @@ class EventRepository:
             else:
                 raise ArgumentError
 
-    # удаление мероприятия
-    async def delete_event(self, id: str) -> None:
+
+    async def delete_event(self, event_id: str) -> None:
         """
         DELETE FROM event WHERE id = {event_id}
         """
-        stmp = delete(Event).where(Event.id == id)
+        stmp = delete(Event).where(Event.id == event_id)
 
         async with self._sessionmaker() as session:
             search_id = select(Event).where(Event.id == event_id) 
@@ -85,7 +85,7 @@ class EventRepository:
             else:
                 raise ArgumentError
 
-    # получение информации о всех мероприятиях
+
     async def get_all_events(self) -> list | None:
         """
         SELECT * FROM event
@@ -99,7 +99,7 @@ class EventRepository:
         
         row = list(resp.fetchall())
         if len(row) == 0:
-            return None 
+            return None
         
         keys = ["id", "name", "start_datetime", "end_datetime", "place", "content", "category", "tags"]
         info = [dict(zip(keys, item)) for item in row]

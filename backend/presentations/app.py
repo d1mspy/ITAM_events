@@ -30,12 +30,17 @@ async def post_event(name: str,
 
 
 
-@app.get("/events/{id}")
-async def get_event(id: str = Path(...)) -> dict | None:
+@app.get("/events/{event_id}")
+async def get_event(event_id: str = Path(...)) -> dict | None:
     """
     получение информации о мероприятии по id
     """
-    info = await event.get_event(event_id)
+    
+    try:
+        info = await event.get_event(event_id)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+
     if info is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
@@ -64,12 +69,18 @@ async def put_event(name: str,
 
 
 
-@app.delete("/events/{id}")
-async def delete_event(id: str = Path(...)) -> None:
+@app.delete("/events/{event_id}")
+async def delete_event(event_id: str = Path(...)) -> None:
     """
     Удаление мероприятия
     """
-    await event.delete_event(event_id)
+    try:
+        await event.delete_event(event_id)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+    except ArgumentError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
+
 
 
 @app.get("/events")
@@ -77,7 +88,7 @@ async def get_all_events() -> list | None:
     """
     Получение информации о всех мероприятиях
     """
-
+    
     try:
         info = await event.get_all_events()
     except OperationalError:
