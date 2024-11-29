@@ -6,33 +6,49 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// Custom claims structure
+type UserClaims struct {
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Group     string `json:"group"`
+	Age       int    `json:"age"`
+	jwt.StandardClaims
+}
+
 var secretKey []byte
 
 func InitializeSecretKey(key string) {
 	secretKey = []byte(key)
 }
 
+// GenerateJWT creates a new JWT token for a given user.
 func GenerateJWT(email, firstName, lastName, group string, age int) (string, error) {
-	claims := jwt.MapClaims{}
-	claims["email"] = email
-	claims["first_name"] = firstName
-	claims["last_name"] = lastName
-	claims["group"] = group
-	claims["age"] = age
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	claims := &UserClaims{
+		Email:     email,
+		FirstName: firstName,
+		LastName:  lastName,
+		Group:     group,
+		Age:       age,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(secretKey)
 }
 
-func ValidateJWT(tokenString string) (map[string]interface{}, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+// ValidateJWT checks the validity of a token and returns its claims.
+func ValidateJWT(tokenString string) (*UserClaims, error) {
+	claims := &UserClaims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return claims, nil
+	if err != nil || !token.Valid {
+		return nil, err
 	}
 
-	return nil, err
+	return claims, nil // Return the claims if valid
 }
