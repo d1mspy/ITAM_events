@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncSession
 
 # подключение к sqlite БД для событий
-def sqlite_connection() -> async_sessionmaker[AsyncSession]:
+def sqlite_connection() -> async_sessionmaker[AsyncSession] | None:
     
     url = "sqlite+aiosqlite:///backend/sqlite.db"
 
