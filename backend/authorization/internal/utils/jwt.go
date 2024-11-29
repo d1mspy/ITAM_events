@@ -6,7 +6,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// Custom claims structure
 type UserClaims struct {
 	Email     string `json:"email"`
 	FirstName string `json:"first_name"`
@@ -22,7 +21,6 @@ func InitializeSecretKey(key string) {
 	secretKey = []byte(key)
 }
 
-// GenerateJWT creates a new JWT token for a given user.
 func GenerateJWT(email, firstName, lastName, group string, age int) (string, error) {
 	claims := &UserClaims{
 		Email:     email,
@@ -39,7 +37,6 @@ func GenerateJWT(email, firstName, lastName, group string, age int) (string, err
 	return token.SignedString(secretKey)
 }
 
-// ValidateJWT checks the validity of a token and returns its claims.
 func ValidateJWT(tokenString string) (*UserClaims, error) {
 	claims := &UserClaims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
@@ -50,5 +47,5 @@ func ValidateJWT(tokenString string) (*UserClaims, error) {
 		return nil, err
 	}
 
-	return claims, nil // Return the claims if valid
+	return claims, nil
 }
