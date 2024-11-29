@@ -8,10 +8,11 @@ from datetime import datetime
 # класс для взаимодействия с бд мероприятий
 class EventRepository:
 
+    # подключение к sqlite
     def __init__(self):
         self._sessionmaker = sqlite_connection()
 
-
+    # создание мероприятия
     async def post_event(self, name: str, start_datetime: datetime, end_datetime: datetime, 
                          place: str, content: str, category: str, tags: str) -> None:
         """
@@ -26,8 +27,7 @@ class EventRepository:
             await session.execute(stmp) 
             await session.commit()
 
-
-
+    # получение информации о мероприятии по id
     async def get_event(self, event_id: str) -> dict | None:
         """
         SELECT * FROM event WHERE id = {event_id}
@@ -48,7 +48,7 @@ class EventRepository:
 
         return info
     
-
+    # обновление информации о мероприятии
     async def put_event(self, id: str, name: str, start_datetime: datetime, end_datetime: datetime, 
                         place: str, content: str, category: str, tags: str) -> None:
         """
@@ -69,15 +69,15 @@ class EventRepository:
             else:
                 raise ArgumentError
 
-
-    async def delete_event(self, event_id: str) -> None:
+    # удаление мероприятия
+    async def delete_event(self, id: str) -> None:
         """
         DELETE FROM event WHERE id = {event_id}
         """
-        stmp = delete(Event).where(Event.id == event_id)
+        stmp = delete(Event).where(Event.id == id)
 
         async with self._sessionmaker() as session:
-            search_id = select(Event).where(Event.id == event_id) 
+            search_id = select(Event).where(Event.id == id) 
             id_found = len(list(await session.execute(search_id)))
             if id_found:
                 await session.execute(stmp)
@@ -85,7 +85,7 @@ class EventRepository:
             else:
                 raise ArgumentError
 
-
+    # получение информации о всех мероприятиях
     async def get_all_events(self) -> list | None:
         """
         SELECT * FROM event
