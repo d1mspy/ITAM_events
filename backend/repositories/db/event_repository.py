@@ -1,7 +1,9 @@
 from persistent.db.event import Event
 from infrastructure.db.connect import sqlite_connection
-from sqlalchemy import insert, select, update, delete
+from sqlalchemy import insert, select, update, delete, exists, func, text
+from sqlalchemy.exc import ArgumentError 
 from datetime import datetime
+
 
 # класс для взаимодействия с бд мероприятий
 class EventRepository:
@@ -19,10 +21,11 @@ class EventRepository:
 
         stmp = insert(Event).values({"name": name, "start_datetime": start_datetime, "end_datetime": end_datetime, 
                                      "place": place, "content": content, "category": category, "tags": tags})
-
+        
         async with self._sessionmaker() as session:
-            await session.execute(stmp)
+            await session.execute(stmp) 
             await session.commit()
+
 
 
     async def get_event(self, event_id: str) -> dict | None:
@@ -58,8 +61,13 @@ class EventRepository:
                                     "place": place, "content": content, "category": category, "tags": tags}).where(Event.id == id)
 
         async with self._sessionmaker() as session:
-            await session.execute(stmp)
-            await session.commit()
+            search_id = select(Event).where(Event.id == id) 
+            id_found = len(list(await session.execute(search_id)))
+            if id_found:
+                await session.execute(stmp)
+                await session.commit()
+            else:
+                raise ArgumentError
 
 
     async def delete_event(self, event_id: str) -> None:
@@ -69,8 +77,13 @@ class EventRepository:
         stmp = delete(Event).where(Event.id == event_id)
 
         async with self._sessionmaker() as session:
-            await session.execute(stmp)
-            await session.commit()
+            search_id = select(Event).where(Event.id == event_id) 
+            id_found = len(list(await session.execute(search_id)))
+            if id_found:
+                await session.execute(stmp)
+                await session.commit()
+            else:
+                raise ArgumentError
 
 
     async def get_all_events(self) -> list | None:
@@ -84,10 +97,9 @@ class EventRepository:
             resp = await session.execute(stmp)
             await session.commit()
         
-        try:
-            row = list(resp.fetchall())
-        except Exception:
-            return None
+        row = list(resp.fetchall())
+        if len(row) == 0:
+            return None 
         
         keys = ["id", "name", "start_datetime", "end_datetime", "place", "content", "category", "tags"]
         info = [dict(zip(keys, item)) for item in row]

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Path, status, HTTPException
 from repositories.db.event_repository import EventRepository
+from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
 
 app = FastAPI(
@@ -22,7 +23,11 @@ async def post_event(name: str,
     start_datetime = datetime(start_year, start_month, start_day, start_hour, start_minute)
     end_datetime = datetime(end_year, end_month, end_day, end_hour, end_minute)
     
-    await event.post_event(name, start_datetime, end_datetime, place, content, category, tags)
+    try:
+        await event.post_event(name, start_datetime, end_datetime, place, content, category, tags)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+
 
 
 @app.get("/events/{event_id}")
@@ -30,11 +35,17 @@ async def get_event(event_id: str = Path(...)) -> dict | None:
     """
     получение информации о мероприятии по id
     """
-    info = await event.get_event(event_id)
+    
+    try:
+        info = await event.get_event(event_id)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+
     if info is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="мероприятие не найдено")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
     return info
+
 
 
 @app.put("/events/{id}")
@@ -49,7 +60,13 @@ async def put_event(name: str,
     start_datetime = datetime(start_year, start_month, start_day, start_hour, start_minute)
     end_datetime = datetime(end_year, end_month, end_day, end_hour, end_minute)
 
-    await event.put_event(id, name, start_datetime, end_datetime, place, content, category, tags)
+    try:
+        await event.put_event(id, name, start_datetime, end_datetime, place, content, category, tags)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+    except ArgumentError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
+
 
 
 @app.delete("/events/{event_id}")
@@ -57,7 +74,13 @@ async def delete_event(event_id: str = Path(...)) -> None:
     """
     Удаление мероприятия
     """
-    await event.delete_event(event_id)
+    try:
+        await event.delete_event(event_id)
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+    except ArgumentError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
+
 
 
 @app.get("/events")
@@ -65,6 +88,13 @@ async def get_all_events() -> list | None:
     """
     Получение информации о всех мероприятиях
     """
-    info = await event.get_all_events()
+
+    try:
+        info = await event.get_all_events()
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+    
+    if info is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятия не найдены")
 
     return info
