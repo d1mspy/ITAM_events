@@ -27,6 +27,6 @@ func main() {
 	e.POST("/register", services.RegisterUser)
 	e.POST("/login", services.LoginUser)
 
-	log.Println("Server is running on port 8000")
-	log.Fatal(e.Start(":8000"))
+	log.Println("Server is running on port 8080")
+	log.Fatal(e.Start(":8080"))
 }

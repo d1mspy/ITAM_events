@@ -10,4 +10,5 @@
         "jwt_secret": "your_jwt_secret_key",
         "api_key": "your_api_key"
     }
-}
+  }
+  
