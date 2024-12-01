@@ -58,5 +58,13 @@ func LoginUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Could not generate token"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{"token": tokenString})
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"token":      tokenString,
+		"is_admin":   storedUser.IsAdmin,
+		"email":      user.Email,
+		"first_name": storedUser.FirstName,
+		"last_name":  storedUser.LastName,
+		"group":      storedUser.Group,
+		"age":        storedUser.Age,
+	})
 }
