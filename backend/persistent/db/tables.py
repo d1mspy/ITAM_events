@@ -1,4 +1,4 @@
-from persistent.db.base import Base, WithId, WithRegisterId
+from persistent.db.base import Base, WithId
 from sqlalchemy import Column, Text, DateTime
 
 # таблица мероприятий
@@ -13,11 +13,8 @@ class Event(Base, WithId):
     category = Column(Text)
     tags = Column(Text)
 
-
-class RegistredUsers(Base, WithRegisterId):
+# таблица пользователей, зарегестрированных на мероприятия 
+class RegistredUsers(Base, WithId):
     __tablename__ = "registred_users" 
 
-    name = Column(Text, nullable=False) 
-    email = Column(Text, nullable=False)
-    group = Column(Text, nullable=False) 
     event_id = Column(Text, nullable=False)

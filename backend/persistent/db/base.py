@@ -13,9 +13,3 @@ class WithId:
     __abstract__ = True
 
     id = Column(Text, default=_uuid4_to_str, primary_key=True)
-
-
-class WithRegisterId:
-    __abstract__ = True
-
-    register_id = Column(Text, default=_uuid4_to_str, primary_key=True)
