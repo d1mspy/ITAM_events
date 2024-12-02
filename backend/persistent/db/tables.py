@@ -9,6 +9,12 @@ class Event(Base, WithId):
     start_datetime = Column(DateTime, nullable=False)
     end_datetime = Column(DateTime,  nullable=False)
     place = Column(Text, nullable=False)
-    content = Column(Text)
+    content = Column(Text, nullable=False)
     category = Column(Text)
     tags = Column(Text)
+
+# таблица пользователей, зарегестрированных на мероприятия 
+class RegistredUsers(Base, WithId):
+    __tablename__ = "registred_users" 
+
+    event_id = Column(Text, nullable=False)

@@ -1,9 +1,13 @@
+from typing import List
+from fastapi.responses import JSONResponse
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
+
 from fastapi import FastAPI, Path, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 app = FastAPI(
     title="ITAM мероприятия",
@@ -30,7 +34,7 @@ class Event(BaseModel):
     content: str | None
     category: str | None
     tags: str | None
-    
+
 
 # разрешение запросов из сторонних сервисов(для фронтенда)
 def allow_requests() -> None:
@@ -103,20 +107,3 @@ async def delete_event(id: str = Path(...)) -> None:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
     except ArgumentError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
-
-
-@app.get("/")
-async def get_all_events() -> list | None:
-    """
-    Получение информации о всех мероприятиях
-    """
-    
-    try:
-        info = await event_rep.get_all_events()
-    except OperationalError:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
-    
-    if info is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятия не найдены")
-
-    return info
