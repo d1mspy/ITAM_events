@@ -110,3 +110,13 @@ async def delete_event(id: str = Path(...)) -> None:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
     except ArgumentError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
+
+
+@app.post("/{id}")
+async def register_on_event(id: str = Path(...)) -> None:
+    ...
+
+
+@app.delete("/{id}")
+async def cancel_registration(id: str = Path(...)) -> None:
+    ...

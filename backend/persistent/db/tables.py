@@ -1,5 +1,5 @@
 from persistent.db.base import Base, WithId, With_created_at, With_updated_at
-from sqlalchemy import Column, Text, DateTime, BigInteger
+from sqlalchemy import Column, Text, DateTime, BigInteger, Date
 
 # таблица мероприятий
 class Event(Base, WithId, With_created_at, With_updated_at):
@@ -13,6 +13,17 @@ class Event(Base, WithId, With_created_at, With_updated_at):
     category = Column(Text)
     tags = Column(Text)
     max_people = Column(BigInteger)
+    
+# таблица пользователей
+class User(Base, With_created_at, With_updated_at):
+    __tablename__ = "user"
+    
+    id = Column(Text, primary_key=True)
+    email = Column(Text, nullable=False)
+    name = Column(Text, nullable=False)
+    surname = Column(Text, nullable=False)
+    date_of_birth = Column(Date, nullable=False)
+    group = Column(Text)
 
 # таблица пользователей, зарегестрированных на мероприятия 
 class RegistredUsers(Base, WithId, With_created_at, With_updated_at):
