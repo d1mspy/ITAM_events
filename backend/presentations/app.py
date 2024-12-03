@@ -1,7 +1,6 @@
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
-
 from fastapi import FastAPI, Path, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from repositories.db.event_repository import EventRepository
@@ -9,13 +8,16 @@ from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
 
+
 app = FastAPI(
     title="ITAM мероприятия",
     description="микросервис для управления мероприятиями на платформе ITAM"
 )
 
+
 # экземпляр класса для взаимодействия с базой данных
 event_rep = EventRepository()
+
 
 # класс мероприятия
 class Event(BaseModel):
@@ -31,9 +33,10 @@ class Event(BaseModel):
     end_hour: int
     end_minute: int
     place: str
-    content: str | None
-    category: str | None
-    tags: str | None
+    content: str
+    category: str
+    tags: str
+    max_people: int
 
 
 # разрешение запросов из сторонних сервисов(для фронтенда)
