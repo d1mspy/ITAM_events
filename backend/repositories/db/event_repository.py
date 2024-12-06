@@ -1,4 +1,4 @@
-from persistent.db.event import Event
+from persistent.db.tables import Event
 from infrastructure.db.connect import sqlite_connection
 from sqlalchemy import insert, select, update, delete, exists, func, text
 from sqlalchemy.exc import ArgumentError 
