@@ -31,3 +31,4 @@ class RegisteredUsers(Base, WithId, With_created_at, With_updated_at):
 
     user_id = Column(Text, nullable=False)
     event_id = Column(Text, nullable=False)
+    user_id = Column(Text, nullable=False)
