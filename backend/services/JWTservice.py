@@ -10,9 +10,7 @@ class TokenValidationResult(BaseModel):
     data: dict | None
     exception: Exception | None
 
-async def check_access_token(
-    authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))
-    ) -> TokenValidationResult:
+async def check_access_token(authorization_header: str) -> TokenValidationResult:
     
     exc = None
     check_status = True
@@ -36,4 +34,3 @@ async def check_access_token(
     return TokenValidationResult(is_valid=check_status, 
                                  data={"id": payload.get("id"), "is_admin": payload.get("is_admin")}, 
                                  exception=None)
-    2
