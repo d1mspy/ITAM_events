@@ -18,7 +18,6 @@ app = FastAPI(
 # экземпляр класса для взаимодействия с базой данных
 event_rep = EventRepository()
 
-
 # класс мероприятия
 class Event(BaseModel):
     name: str
@@ -112,11 +111,29 @@ async def delete_event(id: str = Path(...)) -> None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
 
+@app.get("/")
+async def get_all_events() -> list:
+    """
+    получение информации о всех мероприятиях
+    """
+    try:
+        info = await event_rep.get_all_events()
+    except OperationalError:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
+    return info
+
+
 @app.post("/{id}")
 async def register_on_event(id: str = Path(...)) -> None:
+    """
+    регистрация на мероприятие
+    """
     ...
 
 
 @app.delete("/{id}")
 async def cancel_registration(id: str = Path(...)) -> None:
+    """
+    отмена регистрации на мероприятие
+    """
     ...
