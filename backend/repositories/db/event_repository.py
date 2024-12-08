@@ -1,4 +1,4 @@
-from persistent.db.tables import Event
+from persistent.db.tables import Event, User, RegisteredUsers
 from infrastructure.db.connect import sqlite_connection
 from sqlalchemy import insert, select, update, delete, exists, func, text
 from sqlalchemy.exc import ArgumentError 
@@ -90,8 +90,7 @@ class EventRepository:
         """
         SELECT * FROM event
         """
-        stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime,
-                      Event.place, Event.content, Event.category, Event.tags)
+        stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime, Event.place, Event.content, Event.category, Event.tags)
 
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
@@ -106,3 +105,39 @@ class EventRepository:
 
         return info
         
+    # регистрация на мероприятие
+    async def register_on_event(self, event_id: str, user_id: str) -> dict:
+        
+        stmp = insert(RegisteredUsers).values({"user_id": user_id, "event_id": event_id})
+        
+        async with self._sessionmaker() as session:
+            await session.execute(stmp)
+            await session.commit()
+            
+        return {"detail": "successfully registered"}
+    
+    # отмена регистрации на мероприятие
+    async def cancel_registration(self, event_id: str, user_id: str) -> dict:
+        
+        stmp = delete(RegisteredUsers).where(RegisteredUsers.event_id == event_id and RegisteredUsers.user_id == user_id)
+        
+        async with self._sessionmaker() as session:
+            await session.execute(stmp)
+            await session.commit()
+        
+        return {"detail": "successfully canceled registration"}
+    
+    # проверка регистрации пользователя на мероприятие
+    async def check_registration(self, event_id: str, user_id: str) -> bool:
+        
+        stmp = select(RegisteredUsers.id).where(RegisteredUsers.user_id == user_id and RegisteredUsers.event_id == event_id)
+        
+        async with self._sessionmaker as session:
+            resp = await session.execute(stmp)
+            
+        row = resp.fetchone()
+        
+        if row is None:
+            return False
+        return True
+    
