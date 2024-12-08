@@ -1,12 +1,9 @@
-from typing import List
-from fastapi.responses import JSONResponse
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from fastapi import FastAPI, Path, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 app = FastAPI(

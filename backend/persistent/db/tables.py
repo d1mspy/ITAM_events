@@ -30,3 +30,4 @@ class RegistredUsers(Base, WithId, With_created_at, With_updated_at):
     __tablename__ = "registered_users" 
 
     event_id = Column(Text, nullable=False)
+    user_id = Column(Text, nullable=False)
