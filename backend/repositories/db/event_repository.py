@@ -114,8 +114,6 @@ class EventRepository:
         async with self._sessionmaker() as session:
             await session.execute(stmp)
             await session.commit()
-
-        get_email = select(RegisteredUsers)
             
         return {"detail": "successfully registered"}
     
