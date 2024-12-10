@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Path, status, HTTPException
+from fastapi import FastAPI, Path, status, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
 from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
 from pydantic import BaseModel
+from services.JWTservice import check_access_token, TokenValidationResult
 
 
 app = FastAPI(
