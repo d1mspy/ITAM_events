@@ -5,7 +5,7 @@ from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
 from pydantic import BaseModel
-from services.JWTservice import check_access_token, TokenValidationResult
+from services.JWTservice import check_access_token
 
 
 app = FastAPI(
@@ -61,11 +61,9 @@ async def post_event(event: Event, authorization_header: str = Security(APIKeyHe
     """
     создание мероприятия
     """
-    token = check_access_token(authorization_header)
-    if token.exception is not None:
-        raise token.exception
+    user_data = await check_access_token(authorization_header)
     
-    if not token.data['is_admin']:
+    if not user_data['is_admin']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="создавать мероприятия может только администратор")
 
 
@@ -100,11 +98,9 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
     """
     обновление информации о мероприятии
     """
-    token = check_access_token(authorization_header)
-    if token.exception is not None:
-        raise token.exception
+    user_data = await check_access_token(authorization_header)
     
-    if not token.data['is_admin']:
+    if not user_data['is_admin']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="обновлять мероприятия может только администратор")
 
 
@@ -124,11 +120,9 @@ async def delete_event(id: str = Path(...), authorization_header: str = Security
     """
     Удаление мероприятия
     """
-    token = check_access_token(authorization_header)
-    if token.exception is not None:
-        raise token.exception
+    user_data = await check_access_token(authorization_header)
     
-    if not token.data['is_admin']:
+    if not user_data['is_admin']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="удалять мероприятия может только администратор")
     
     try:
@@ -156,14 +150,12 @@ async def register_on_event(id: str = Path(...), authorization_header: str = Sec
     """
     регистрация на мероприятие
     """
-    token = check_access_token(authorization_header)
-    if token.exception is not None:
-        raise token.exception
+    user_data = await check_access_token(authorization_header)
     
-    if not event_rep.check_registration(id, token.data['id']):
+    if not event_rep.check_registration(id, user_data['id']):
         return {"detail": "already registered"}
     
-    detail = await event_rep.register_on_event(id, token.data['id'])
+    detail = await event_rep.register_on_event(id, user_data['id'])
     return detail
 
 
@@ -172,12 +164,10 @@ async def cancel_registration(id: str = Path(...), authorization_header: str = S
     """
     отмена регистрации на мероприятие
     """
-    token = check_access_token(authorization_header)
-    if token.exception is not None:
-        raise token.exception
-    
-    if event_rep.check_registration(id, token.data['id']):
-        detail = await event_rep.cancel_registration(id, token.data['id'])
+    user_data = await check_access_token(authorization_header)
+
+    if event_rep.check_registration(id, user_data['id']):
+        detail = await event_rep.cancel_registration(id, user_data['id'])
         return detail
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='пользователь не зарегистрирован на мероприятие')
