@@ -58,80 +58,163 @@
 	}
 </script>
 
+<header>
+	<div class="header">
+		<div class="logo"><img src="logo.svg" /></div>
+		<nav>
+			<button class="nav-btn">Мероприятия</button>
+			<button class="nav-btn">Админ-панель</button>
+			<div class="avatar"><img src="avatar.svg" /></div>
+		</nav>
+	</div>
+</header>
 <main>
 	<h1>Админ-панель</h1>
+	<img src="Стрелка.svg" class="back" on:click={cancel} />
 	<form on:submit|preventDefault={saveObject(newObject)}>
-		<label>
-			Название
-			<input type="text" bind:value={name} required />
-		</label>
-		<label>
-			Описание
-			<textarea bind:value={content}></textarea>
-		</label>
-		<label>
-			День
+		<label>Название</label>
+		<input type="text" bind:value={name} required />
+		<label>День</label>
+		<div class="split">
 			<input type="number" bind:value={start_day} min="1" max="31" required />
-		</label>
-		<label>
-			Месяц
+
 			<input type="number" bind:value={start_month} min="1" max="12" required />
-		</label>
-		<label>
-			Год
+
 			<input type="number" bind:value={start_year} min="2024" required />
-		</label>
-		<label>
-			Время
+
 			<input type="number" bind:value={start_hour} min="0" max="23" required />
-		</label>
-		<label>
+
 			<input type="number" bind:value={start_minute} min="0" max="59" required />
-		</label>
-		<label>
-			День
+		</div>
+		<label>День</label>
+		<div class="split">
 			<input type="number" bind:value={end_day} min="1" max="31" required />
-		</label>
-		<label>
-			Месяц
 			<input type="number" bind:value={end_month} min="1" max="12" required />
-		</label>
-		<label>
-			Год
 			<input type="number" bind:value={end_year} min="2024" required />
-		</label>
-		<label>
-			Время
 			<input type="number" bind:value={end_hour} min="0" max="23" required />
-		</label>
-		<label>
 			<input type="number" bind:value={end_minute} min="0" max="59" required />
-		</label>
-		<label>
-			Тег
-			<input type="text" bind:value={tags} required />
-		</label>
-		<label>
-			Формат проведение
-			<input type="text" bind:value={category} required />
-		</label>
-		<label>
-			Место проведения
-			<input type="text" bind:value={place} required />
-		</label>
+		</div>
+		<div class="split_new">
+			<div class="element">
+				<label>Тег</label><br />
+				<input type="text" bind:value={tags} required />
+			</div>
+			<div class="element">
+				<label>Формат проведение</label><br />
+				<input type="text" bind:value={category} required />
+			</div>
+			<div class="element">
+				<label>Место проведения</label><br />
+				<input type="text" bind:value={place} required />
+			</div>
+		</div>
+		<label>Описание</label>
+		<textarea bind:value={content}></textarea>
 		<button type="submit">Сохранить</button>
-		<button type="button" on:click={cancel}>Отмена</button>
 	</form>
 </main>
 
 <style>
-	main {
-		padding: 1rem;
+	.split {
+		display: grid;
+		grid-template-columns: 2fr 3fr 3fr 3fr 3fr;
+		gap: 15px;
 	}
-
+	.split_new {
+		display: grid;
+		grid-template-columns: 5fr 5fr 5fr;
+		gap: 15px;
+	}
+	main {
+		margin-left: 60px;
+		margin-right: 60px;
+		font-family: "ttnormspro-regular", sans-serif;
+		font-size: 27px;
+	}
+	label {
+		margin-bottom: 3px;
+	}
+	input {
+		border-radius: 20px;
+		height: 52px;
+		padding: 10px 18px;
+		font-size: 27px;
+		color: #787878;
+		border: 2px solid #808080;
+	}
+	textarea {
+		border-radius: 20px;
+		height: 104px;
+		padding: 10px 18px;
+		font-size: 27px;
+		color: #787878;
+		border: 2px solid #808080;
+	}
 	form {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+	header {
+		margin-top: 25px;
+		margin-left: 23px;
+		margin-right: 23px;
+		padding: 18px 37px;
+		background: linear-gradient(to right, #fccdcd, #c8aae7);
+		border-radius: 60px;
+		height: 91;
+	}
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.logo {
+		margin-top: 7.5;
+		margin-bottom: 7.5;
+		margin-left: 19;
+	}
+	.nav-btn {
+		background: white;
+		border: none;
+		border-radius: 40px;
+		padding: 10px 20px;
+		cursor: pointer;
+	}
+	nav {
+		display: flex;
+	}
+	.avatar {
+		margin-left: 16px;
+	}
+	h1 {
+		color: rgba(60, 51, 64, 1);
+		font-family: "cygre-medium", sans-serif;
+		margin-bottom: 16px;
+	}
+	.back {
+		margin-bottom: 21px;
+	}
+	button {
+		background: linear-gradient(135deg, rgba(250, 202, 206, 0.5), rgba(200, 170, 231, 0.5));
+		border: none;
+		padding: 10.5px;
+		color: rgba(60, 51, 64, 1);
+		border-radius: 10px;
+		font-size: 18px;
+		cursor: pointer;
+		height: 70px;
+		transition:
+			transform 0.3s,
+			box-shadow 0.3s;
+	}
+
+	button:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+	}
+	@font-face {
+		font-family: "ttnormspro-regular";
+		src: url("/fonts/ttnormspro-regular.ttf");
 	}
 </style>
