@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Path, status, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
+from services.JWTservice import check_access_token
 from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
@@ -115,7 +116,7 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
 
-@app.delete("/{id}")
+@app.delete("/events/{id}")
 async def delete_event(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> None:
     """
     Удаление мероприятия
@@ -159,7 +160,7 @@ async def register_on_event(id: str = Path(...), authorization_header: str = Sec
     return detail
 
 
-@app.delete("/{id}")
+@app.delete("/registrations/{id}")
 async def cancel_registration(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> dict:
     """
     отмена регистрации на мероприятие

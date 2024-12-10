@@ -1,6 +1,7 @@
 from persistent.db.tables import Event, User, RegisteredUsers
 from infrastructure.db.connect import sqlite_connection
 from sqlalchemy import insert, select, update, delete
+from services.mail_service import send_message 
 from sqlalchemy.exc import ArgumentError 
 from datetime import datetime
 

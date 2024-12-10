@@ -4,8 +4,8 @@ import smtplib
 import re
 
 
-SERVER_EMAIL_ADRESS = "ITAM_events@yandex.ru"  # Адресс почты сераера 
-SERVER_EMAIL_PASSWORD = "************"  # Пароль почты сервера 
+SERVER_EMAIL_ADRESS = "lyil.x.d.v@yandex.ru"  # Адресс почты сераера 
+SERVER_EMAIL_PASSWORD = "kfgjcdueradxvhry"  # Пароль почты сервера 
 
 smtp = smtplib.SMTP("smtp.yandex.ru", 587) 
 smtp.ehlo() 
