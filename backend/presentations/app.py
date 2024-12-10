@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Path, status, HTTPException
+from fastapi import FastAPI, Path, Security, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
+from services.JWTservice import check_access_token
 from repositories.db.event_repository import EventRepository
 from sqlalchemy.exc import OperationalError, ArgumentError
 from datetime import datetime
@@ -52,7 +53,7 @@ async def post_event(event: Event, authorization_header: str = Security(APIKeyHe
     """
     создание мероприятия
     """
-    token = check_access_token(authorization_header)
+    token = await check_access_token(authorization_header)
     if token.exception is not None:
         raise token.exception
     
@@ -91,7 +92,7 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
     """
     обновление информации о мероприятии
     """
-    token = check_access_token(authorization_header)
+    token = await check_access_token(authorization_header)
     if token.exception is not None:
         raise token.exception
     
@@ -110,12 +111,12 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
 
-@app.delete("/{id}")
+@app.delete("/events/{id}")
 async def delete_event(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> None:
     """
     Удаление мероприятия
     """
-    token = check_access_token(authorization_header)
+    token = await check_access_token(authorization_header)
     if token.exception is not None:
         raise token.exception
     
@@ -147,7 +148,7 @@ async def register_on_event(id: str = Path(...), authorization_header: str = Sec
     """
     регистрация на мероприятие
     """
-    token = check_access_token(authorization_header)
+    token = await check_access_token(authorization_header)
     if token.exception is not None:
         raise token.exception
     
@@ -158,12 +159,12 @@ async def register_on_event(id: str = Path(...), authorization_header: str = Sec
     return detail
 
 
-@app.delete("/{id}")
+@app.delete("/registrations/{id}")
 async def cancel_registration(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> dict:
     """
     отмена регистрации на мероприятие
     """
-    token = check_access_token(authorization_header)
+    token = await check_access_token(authorization_header)
     if token.exception is not None:
         raise token.exception
     
