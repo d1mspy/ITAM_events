@@ -1,4 +1,3 @@
-from typing import Annotated
 from fastapi import Request, Security, status, HTTPException
 from fastapi.security import APIKeyHeader
 from jwt import decode
@@ -9,29 +8,26 @@ from pydantic import BaseModel
 class TokenValidationResult(BaseModel):
     is_valid: bool
     data: dict | None
-    exception: Annotated[str, Exception | None]
+    exception: Exception | None
 
-async def check_access_token(authorization_header: str) -> TokenValidationResult:
-    
-    exc = None
-    check_status = True
+async def check_access_token(authorization_header: str) -> dict:
     
     if authorization_header is None:
         exc = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="пользователь не авторизован")
-        return TokenValidationResult(is_valid=False, data={}, exception=str(exc)) 
+        return TokenValidationResult(is_valid=False, exception=exc)
     
     elif 'Bearer ' not in authorization_header:
         exc = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="некорректный authorization header")
-        return TokenValidationResult(is_valid=False, data={}, exception=str(exc))  
+        return TokenValidationResult(is_valid=False, exception=exc)
     
-    token = authorization_header.replace('Bearer ', '')
+    token = str(authorization_header)
     
     try:
-        payload = decode(jwt=token, key=JWT_SECRET, algorithms=["HS256"])
+        payload = decode(jwt=token, key=str(JWT_SECRET), algorithms=["HS256"])
     except InvalidTokenError:
         exc = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="токен не валиден")
-        return TokenValidationResult(is_valid=False, data={}, exception=str(exc))  
+        return TokenValidationResult(is_valid=False, exception=exc)
     
     return TokenValidationResult(is_valid=check_status, 
-                                 data={"id": payload.get("id"), "is_admin": payload.get("is_admin")},
-                                 exception=None)  
+                                 data={"id": payload.get("id"), "is_admin": payload.get("is_admin")}, 
+                                 exception=None)

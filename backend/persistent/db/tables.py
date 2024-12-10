@@ -22,7 +22,7 @@ class User(Base, With_created_at, With_updated_at):
     email = Column(Text, nullable=False)
     name = Column(Text, nullable=False)
     surname = Column(Text, nullable=False)
-    date_of_birth = Column(Date, nullable=False)
+    age = Column(BigInteger, nullable=False)
     group = Column(Text)
 
 # таблица пользователей, зарегестрированных на мероприятия 
@@ -31,4 +31,3 @@ class RegisteredUsers(Base, WithId, With_created_at, With_updated_at):
 
     user_id = Column(Text, nullable=False)
     event_id = Column(Text, nullable=False)
-    user_id = Column(Text, nullable=False)
