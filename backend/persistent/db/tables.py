@@ -26,7 +26,9 @@ class User(Base, With_created_at, With_updated_at):
     group = Column(Text)
 
 # таблица пользователей, зарегестрированных на мероприятия 
-class RegistredUsers(Base, WithId, With_created_at, With_updated_at):
+class RegisteredUsers(Base, WithId, With_created_at, With_updated_at):
     __tablename__ = "registered_users" 
 
+    user_id = Column(Text, nullable=False)
     event_id = Column(Text, nullable=False)
+    user_id = Column(Text, nullable=False)

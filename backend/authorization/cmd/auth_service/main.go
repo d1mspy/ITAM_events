@@ -1,32 +1,30 @@
 package main
 
 import (
-	"aytorizathion/internal/config"
-	"aytorizathion/internal/database"
-	"aytorizathion/internal/services"
-	"aytorizathion/internal/utils"
+	"authorization/internal/config"
+	"authorization/internal/db"
+	"authorization/internal/handlers"
 	"log"
-
-	"github.com/labstack/echo/v4"
+	"net/http"
 )
 
 func main() {
-	cfg, err := config.LoadConfig("config.json")
+
+	cfg := config.LoadConfig()
+
+	database, err := db.NewDB("myapp.db")
 	if err != nil {
-		log.Fatalf("Could not load config: %v", err)
+		log.Fatalf("Не удалось инициализировать БД: %v", err)
 	}
 
-	utils.InitializeSecretKey(cfg.SecretKeys.JWTSecret)
+	authHandler := handlers.NewAuthHandler(database, cfg)
 
-	if err := database.InitDB(cfg); err != nil {
-		log.Fatalf("Could not initialize database: %v", err)
+	http.HandleFunc("/register", authHandler.RegisterHandler)
+	http.HandleFunc("/login", authHandler.LoginHandler)
+
+	log.Println("Сервер запущен на :8080")
+	err = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatalf("Ошибка запуска сервера: %v", err)
 	}
-
-	e := echo.New()
-
-	e.POST("/register", services.RegisterUser)
-	e.POST("/login", services.LoginUser)
-
-	log.Println("Server is running on port 8080")
-	log.Fatal(e.Start(":8080"))
 }
