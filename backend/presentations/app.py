@@ -17,6 +17,14 @@ app = FastAPI(
 # экземпляр класса для взаимодействия с базой данных
 event_rep = EventRepository()
 
+class UserInfo(BaseModel):
+    id: str
+    email: str
+    first_name: str
+    last_name: str
+    age: int
+    group: str
+
 # класс мероприятия
 class Event(BaseModel):
     name: str
@@ -173,3 +181,13 @@ async def cancel_registration(id: str = Path(...), authorization_header: str = S
         return detail
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='пользователь не зарегистрирован на мероприятие')
+    
+
+@app.post("/user_data")
+async def save_user(user: UserInfo) -> None:
+    """
+    эндпоинт для получение информации о зарегистрировавшемся пользователе
+    """
+    detail = await event_rep.save_user(user.id, user.email, user.first_name, user.last_name, user.age, user.group)
+    if detail is not None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)

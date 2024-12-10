@@ -125,7 +125,7 @@ class EventRepository:
             await session.execute(stmp)
             await session.commit()
         
-        return {"detail": "successfully canceled registration"}
+        return {"detail": "successfully cancelled registration"}
     
     # проверка регистрации пользователя на мероприятие
     async def check_registration(self, event_id: str, user_id: str) -> bool:
@@ -135,9 +135,28 @@ class EventRepository:
         async with self._sessionmaker as session:
             resp = await session.execute(stmp)
             
-        row = resp.fetchone()
+        row = resp.fetchall()
         
         if row is None:
             return False
         return True
     
+    #сохранение информации о пользователе в бд
+    async def save_user(self, id, email, first_name, last_name, age, group) -> None | str:
+        
+        stmp = select(User).where(User.id == id)
+        
+        async with self._sessionmaker as session:
+            resp = await session.execute(stmp)
+            
+        row = resp.fetchall()
+        
+        if row is not None:
+            return "User already exists"
+        
+        stmp = insert(User).values({"id": id, "email": email, "name": first_name, "surname": last_name, "age": age, "group": group})
+        
+        async with self._sessionmaker as session:
+            await session.execute(stmp)
+            await session.commit()
+        
