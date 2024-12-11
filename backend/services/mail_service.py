@@ -19,10 +19,7 @@ def right_email_format(email_adress: str) -> bool:
     right_format_yandex = re.match(r"^[a-zA-Z0-9_.+-]+@yandex.ru", email_adress)
     right_format_google = re.match(r"^[a-zA-Z0-9_.+-]+@google.com", email_adress)
 
-    if right_format_yandex:
-        return True 
-    
-    if right_format_google:
+    if right_format_yandex or right_format_google:
         return True 
     
     return False

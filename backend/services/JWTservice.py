@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException
-from jwt import decode
+from jwt import decode, encode 
 from jwt.exceptions import InvalidTokenError
 from config.config import JWT_SECRET
 
@@ -12,6 +12,7 @@ async def check_access_token(authorization_header: str) -> dict:
     #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="некорректный authorization header")
     
     token = str(authorization_header)
+    # token = encode(payload={"header": str(authorization_header)}, key=str(JWT_SECRET), algorithm="HS256")
     
     try:
         payload = decode(jwt=token, key=str(JWT_SECRET), algorithms=["HS256"])
