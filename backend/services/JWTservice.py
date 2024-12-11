@@ -12,7 +12,7 @@ async def check_access_token(authorization_header: str) -> dict:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="некорректный authorization header")
     
     token = str(authorization_header.replace('Bearer ', '')).strip()
-    print(token)
+    
     try:
         payload = decode(jwt=token, key=JWT_SECRET, algorithms=["HS256"])
     except InvalidTokenError:
