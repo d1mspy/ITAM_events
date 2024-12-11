@@ -87,11 +87,14 @@ class EventRepository:
                 raise ArgumentError
 
     # получение информации о всех мероприятиях
-    async def get_all_events(self) -> list | None:
+    async def get_all_events(self, filter) -> list | None:
         """
-        SELECT * FROM event
+        SELECT * FROM event WHERE category = {filter}
         """
-        stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime, Event.place, Event.content, Event.category, Event.tags)
+        if filter is not None:
+            stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime, Event.place, Event.content, Event.category, Event.tags).where(Event.tags == filter)
+        else:
+            stmp = select(Event.id, Event.name, Event.start_datetime, Event.end_datetime, Event.place, Event.content, Event.category, Event.tags)
 
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
@@ -133,12 +136,12 @@ class EventRepository:
         
         stmp = select(RegisteredUsers.id).where(RegisteredUsers.user_id == user_id and RegisteredUsers.event_id == event_id)
         
-        async with self._sessionmaker as session:
+        async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
             
         row = resp.fetchall()
         
-        if row is None:
+        if len(row) == 0:
             return False
         return True
     
@@ -147,17 +150,17 @@ class EventRepository:
         
         stmp = select(User).where(User.id == id)
         
-        async with self._sessionmaker as session:
+        async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
             
         row = resp.fetchall()
         
-        if row is not None:
+        if len(row) != 0:
             return "User already exists"
         
-        stmp = insert(User).values({"id": id, "email": email, "name": first_name, "surname": last_name, "age": age, "group": group})
+        stmp = insert(User).values({"id": id, "email": email, "name": first_name, "surname": last_name, "age": age, "user_group": group})
         
-        async with self._sessionmaker as session:
+        async with self._sessionmaker() as session:
             await session.execute(stmp)
             await session.commit()
         

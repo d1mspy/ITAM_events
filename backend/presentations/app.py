@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, status, HTTPException, Security
+from fastapi import FastAPI, Path, status, HTTPException, Security, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
 from services.JWTservice import check_access_token
@@ -57,13 +57,13 @@ def allow_requests() -> None:
     )
 
 
-@app.post("/")
+@app.post("/list")
 async def post_event(event: Event, authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> None:
     """
     создание мероприятия
     """
     user_data = await check_access_token(authorization_header)
-    
+
     if not user_data['is_admin']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="создавать мероприятия может только администратор")
 
@@ -77,7 +77,7 @@ async def post_event(event: Event, authorization_header: str = Security(APIKeyHe
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
 
 
-@app.get("/{id}")
+@app.get("/list/{id}")
 async def get_event(id: str = Path(...)) -> dict | None:
     """
     получение информации о мероприятии по id
@@ -94,7 +94,7 @@ async def get_event(id: str = Path(...)) -> dict | None:
     return info
 
 
-@app.put("/{id}")
+@app.put("/list/{id}")
 async def put_event(event: Event, id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> None:
     """
     обновление информации о мероприятии
@@ -116,7 +116,7 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
 
-@app.delete("/events/{id}")
+@app.delete("/list/{id}")
 async def delete_event(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> None:
     """
     Удаление мероприятия
@@ -134,33 +134,34 @@ async def delete_event(id: str = Path(...), authorization_header: str = Security
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Мероприятие не найдено")
 
 
-@app.get("/")
-async def get_all_events() -> list:
+@app.get("/list")
+async def get_all_events(filter: str = Query(default=None)) -> list:
     """
     получение информации о всех мероприятиях
     """
     try:
-        info = await event_rep.get_all_events()
+        info = await event_rep.get_all_events(filter)
     except OperationalError:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Отсутствует база данных или соответствующее поле")
     return info
 
 
-@app.post("/{id}")
+@app.post("/register/{id}")
 async def register_on_event(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> dict:
     """
     регистрация на мероприятие
     """
     user_data = await check_access_token(authorization_header)
     
-    if not event_rep.check_registration(id, user_data['id']):
+    registration = await event_rep.check_registration(id, user_data['id'])
+    if registration:
         return {"detail": "already registered"}
     
     detail = await event_rep.register_on_event(id, user_data['id'])
     return detail
 
 
-@app.delete("/registrations/{id}")
+@app.delete("/register/{id}")
 async def cancel_registration(id: str = Path(...), authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))) -> dict:
     """
     отмена регистрации на мероприятие
@@ -177,7 +178,7 @@ async def cancel_registration(id: str = Path(...), authorization_header: str = S
 @app.post("/user_data")
 async def save_user(user: UserInfo) -> None:
     """
-    эндпоинт для получение информации о зарегистрировавшемся пользователе
+    эндпоинт для получение информации о пользователе
     """
     detail = await event_rep.save_user(user.id, user.email, user.first_name, user.last_name, user.age, user.group)
     if detail is not None:
