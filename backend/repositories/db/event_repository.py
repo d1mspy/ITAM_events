@@ -113,7 +113,6 @@ class EventRepository:
     # регистрация на мероприятие
     async def register_on_event(self, event_id: str, user_id: str) -> dict:
         
-        user_id = "111" 
         stmp = insert(RegisteredUsers).values({"user_id": user_id, "event_id": event_id})
         
         async with self._sessionmaker() as session:
@@ -141,7 +140,6 @@ class EventRepository:
     # отмена регистрации на мероприятие
     async def cancel_registration(self, event_id: str, user_id: str) -> dict:
         
-        user_id = "112"
         stmp = delete(RegisteredUsers).where(and_(RegisteredUsers.event_id == event_id, RegisteredUsers.user_id == user_id))
         
         async with self._sessionmaker() as session:
