@@ -62,10 +62,10 @@ async def post_event(event: Event, authorization_header: str = Security(APIKeyHe
     """
     создание мероприятия
     """
-    user_data = await check_access_token(authorization_header)
+    # user_data = await check_access_token(authorization_header)
 
-    if not user_data['is_admin']:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="создавать мероприятия может только администратор")
+    # if not user_data['is_admin']:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="создавать мероприятия может только администратор")
 
 
     start_datetime = datetime(event.start_year, event.start_month, event.start_day, event.start_hour, event.start_minute)
@@ -99,10 +99,10 @@ async def put_event(event: Event, id: str = Path(...), authorization_header: str
     """
     обновление информации о мероприятии
     """
-    user_data = await check_access_token(authorization_header)
+    # user_data = await check_access_token(authorization_header)
     
-    if not user_data['is_admin']:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="обновлять мероприятия может только администратор")
+    # if not user_data['is_admin']:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="обновлять мероприятия может только администратор")
 
 
     start_datetime = datetime(event.start_year, event.start_month, event.start_day, event.start_hour, event.start_minute)
@@ -121,10 +121,10 @@ async def delete_event(id: str = Path(...), authorization_header: str = Security
     """
     Удаление мероприятия
     """
-    user_data = await check_access_token(authorization_header)
+    # user_data = await check_access_token(authorization_header)
     
-    if not user_data['is_admin']:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="удалять мероприятия может только администратор")
+    # if not user_data['is_admin']:
+    #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="удалять мероприятия может только администратор")
     
     try:
         await event_rep.delete_event(id)

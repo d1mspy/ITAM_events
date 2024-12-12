@@ -5,10 +5,12 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 COPY go.mod go.sum ./
+RUN apk update && \
+		apk add build-base
 RUN go mod download
 COPY . .
-RUN go build -o main ./cmd/auth_service/main.go
+RUN CGO_ENABLED=1 go build -o main ./cmd/auth_service/main.go
 
-EXPOSE 8090
+EXPOSE 8080
 
 CMD ["./main"]
