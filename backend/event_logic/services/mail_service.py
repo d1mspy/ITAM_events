@@ -1,28 +1,15 @@
+from config.config import SERVER_EMAIL_ADDRESS, SERVER_EMAIL_PASSWORD
 from email.mime.multipart import MIMEMultipart 
 from email.mime.text import MIMEText 
 import smtplib 
 import re
 
-
-SERVER_EMAIL_ADRESS = "lyil.x.d.v@yandex.ru"  # Адресс почты сераера 
-SERVER_EMAIL_PASSWORD = "kfgjcdueradxvhry"  # Пароль почты сервера 
-
-smtp = smtplib.SMTP("smtp.yandex.ru", 587) 
-smtp.ehlo() 
-smtp.starttls() 
-
-smtp.login(SERVER_EMAIL_ADRESS, SERVER_EMAIL_PASSWORD)  
-
-
 # Проверка на корректность адреса
 def right_email_format(email_adress: str) -> bool:
     right_format_yandex = re.match(r"^[a-zA-Z0-9_.+-]+@yandex.ru", email_adress)
-    right_format_google = re.match(r"^[a-zA-Z0-9_.+-]+@google.com", email_adress)
+    right_format_google = re.match(r"^[a-zA-Z0-9_.+-]+@gmail.com", email_adress)
 
-    if right_format_yandex:
-        return True 
-    
-    if right_format_google:
+    if right_format_yandex or right_format_google:
         return True 
     
     return False
@@ -37,6 +24,12 @@ def construct_message(subject="",  text="", img=None, attachment=None):
 
 
 def send_message(subject: str | None = None, message: str | None = None, receivers: list | None = None):
+    smtp = smtplib.SMTP("smtp.yandex.ru", 587) 
+    smtp.ehlo() 
+    smtp.starttls() 
+    print(SERVER_EMAIL_ADDRESS, SERVER_EMAIL_PASSWORD)
+    smtp.login(SERVER_EMAIL_ADDRESS, SERVER_EMAIL_PASSWORD)  
+
     if None in [subject, message, receivers]:
         return 
     
@@ -50,5 +43,5 @@ def send_message(subject: str | None = None, message: str | None = None, receive
         return
     
     msg = construct_message(subject, message) 
-    smtp.sendmail(from_addr=SERVER_EMAIL_ADRESS, to_addrs=approved_receivers, msg=msg.as_string()) 
+    smtp.sendmail(from_addr=SERVER_EMAIL_ADDRESS, to_addrs=approved_receivers, msg=msg.as_string()) 
     smtp.quit()

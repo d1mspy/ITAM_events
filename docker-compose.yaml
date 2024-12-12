@@ -1,0 +1,12 @@
+services:
+  pybackend:
+    restart: always
+
+    build:
+      context: /backend/event_logic
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+  frontend:
+    

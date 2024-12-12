@@ -117,6 +117,22 @@ class EventRepository:
         async with self._sessionmaker() as session:
             await session.execute(stmp)
             await session.commit()
+         
+                 
+        email_stmp = select(User.email).where(User.id == user_id).limit(1) 
+        name_stmp = select(Event.name).where(Event.id == event_id).limit(1) 
+        async with self._sessionmaker() as session:
+            eail_resp = await session.execute(email_stmp) 
+            name_resp = await session.execute(name_stmp) 
+            await session.commit()
+        
+        email_row = str(eail_resp.fetchall()).strip("[(',)]") 
+        name_row = str(name_resp.fetchall()).strip("[(',)]")  
+        send_message(
+            subject="Регистрация на ITAM мероприятия",
+            message="Вы зарегестрированы на мероприятие " + name_row,
+            receivers=[email_row]
+        )
             
         return {"detail": "successfully registered"}
     
@@ -134,7 +150,10 @@ class EventRepository:
     # проверка регистрации пользователя на мероприятие
     async def check_registration(self, event_id: str, user_id: str) -> bool:
         
-        stmp = select(RegisteredUsers.id).where(RegisteredUsers.user_id == user_id and RegisteredUsers.event_id == event_id)
+        try:
+            stmp = select(RegisteredUsers.id).where(RegisteredUsers.user_id == user_id and RegisteredUsers.event_id == event_id)
+        except TypeError:
+            return False
         
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)

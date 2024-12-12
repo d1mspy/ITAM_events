@@ -5,14 +5,14 @@
 	let password = "";
 	let error = "";
 
-	async function handleLogin() {
-		try {
-			await login(username, password);
-			goto("/");
-		} catch (e) {
-			error = "Ошибка входа: " + e.message;
-		}
-	}
+	// async function handleLogin() {
+	// 	try {
+	// 		await login(username, password);
+	// 		goto("/");
+	// 	} catch (e) {
+	// 		error = "Ошибка входа: " + e.message;
+	// 	}
+	// }
 	let currentTab = "login";
 	let step = 1;
 
@@ -50,7 +50,8 @@
 		{#if currentTab === "login"}
 			<!-- Форма входа -->
 			<div class="login_form">
-				<form on:submit|preventDefault={handleLogin}>
+				<!-- <form on:submit|preventDefault={handleLogin}> -->
+				<form>
 					<div class="form-e">
 						<input id="email" type="email" placeholder="Email" bind:value={username} required />
 						<input
@@ -65,7 +66,7 @@
 					</div>
 					<p><a href="#">Забыли пароль?</a></p>
 				</form>
-				<img src="el.svg" class="el" />
+				<img src="el.svg" class="el" alt="element" />
 			</div>
 		{/if}
 
@@ -76,13 +77,7 @@
 					<div class="form-e">
 						<input id="surname" type="text" placeholder="Фамилия" required />
 						<input id="name" type="text" placeholder="Имя" required />
-						<input
-							required
-							type="text"
-							class="form-control"
-							placeholder="Дата рождения"
-							onFocus="(this.type='date')"
-						/>
+						<input required type="text" class="form-control" placeholder="Возраст" />
 						<input id="group" type="text" placeholder="Группа" required />
 
 						<button type="button" on:click={nextStep}>Далее →</button>
@@ -91,7 +86,9 @@
 			{/if}
 			{#if step === 2}
 				<form>
-					<img src="Стрелка.svg" class="back" on:click={lastStep} />
+					<button class="back" on:click={lastStep}>
+						<img src="Стрелка.svg" class="back" alt="back" /></button
+					>
 					<div class="form-e">
 						<input id="reg-email" type="email" placeholder="Email" bind:value={username} required />
 						<input
@@ -111,10 +108,6 @@
 </main>
 
 <style>
-	@font-face {
-		font-family: "ttnormspro-regular";
-		src: url("/fonts/ttnormspro-regular.ttf");
-	}
 	.back {
 		margin-bottom: 18.33px;
 	}
@@ -175,7 +168,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 15px;
-		margin-bottom: 8;
+		margin-bottom: 8px;
 		text-align: center;
 	}
 
@@ -230,5 +223,9 @@
 		opacity: 1;
 		background: url(/calendar.svg) no-repeat center;
 		background-size: contain;
+	}
+	.back {
+		background: none;
+		padding: 0px;
 	}
 </style>

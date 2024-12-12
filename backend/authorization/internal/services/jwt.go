@@ -10,7 +10,7 @@ func GenerateAccessToken(userID string, isAdmin bool, secret []byte) (string, er
 	claims := jwt.MapClaims{
 		"id":       userID,
 		"is_admin": isAdmin,
-		"exp":      time.Now().Add(15 * time.Minute).Unix(),
+		"exp":      time.Now().Add(15000 * time.Minute).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(secret)
