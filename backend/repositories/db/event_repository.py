@@ -1,6 +1,7 @@
 from persistent.db.tables import Event, User, RegisteredUsers
 from infrastructure.db.connect import sqlite_connection
 from sqlalchemy import insert, select, update, delete
+from sqlalchemy.sql import and_ 
 from services.mail_service import send_message 
 from sqlalchemy.exc import ArgumentError 
 from datetime import datetime
@@ -112,6 +113,7 @@ class EventRepository:
     # регистрация на мероприятие
     async def register_on_event(self, event_id: str, user_id: str) -> dict:
         
+        user_id = "111" 
         stmp = insert(RegisteredUsers).values({"user_id": user_id, "event_id": event_id})
         
         async with self._sessionmaker() as session:
@@ -139,21 +141,35 @@ class EventRepository:
     # отмена регистрации на мероприятие
     async def cancel_registration(self, event_id: str, user_id: str) -> dict:
         
-        stmp = delete(RegisteredUsers).where(RegisteredUsers.event_id == event_id and RegisteredUsers.user_id == user_id)
+        user_id = "112"
+        stmp = delete(RegisteredUsers).where(and_(RegisteredUsers.event_id == event_id, RegisteredUsers.user_id == user_id))
         
         async with self._sessionmaker() as session:
             await session.execute(stmp)
             await session.commit()
+        
+        email_stmp = select(User.email).where(User.id == user_id).limit(1) 
+        name_stmp = select(Event.name).where(Event.id == event_id).limit(1) 
+
+        async with self._sessionmaker() as session:
+            eail_resp = await session.execute(email_stmp) 
+            name_resp = await session.execute(name_stmp) 
+            await session.commit()
+        
+        email_row = str(eail_resp.fetchall()).strip("[(',)]") 
+        name_row = str(name_resp.fetchall()).strip("[(',)]")  
+        send_message(
+            subject="Отмена регистрации на ITAM мероприятие",
+            message="Вы отменили регистрацию на мероприятие " + name_row,
+            receivers=[email_row]
+        )
         
         return {"detail": "successfully cancelled registration"}
     
     # проверка регистрации пользователя на мероприятие
     async def check_registration(self, event_id: str, user_id: str) -> bool:
         
-        try:
-            stmp = select(RegisteredUsers.id).where(RegisteredUsers.user_id == user_id and RegisteredUsers.event_id == event_id)
-        except TypeError:
-            return False
+        stmp = select(RegisteredUsers.id).where(and_(RegisteredUsers.user_id == user_id, RegisteredUsers.event_id == event_id))
         
         async with self._sessionmaker() as session:
             resp = await session.execute(stmp)
