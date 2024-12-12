@@ -10,7 +10,7 @@ async def check_access_token(authorization_header: str) -> dict:
     elif 'Bearer ' not in authorization_header:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="некорректный authorization header")
     
-    token = str(authorization_header.replace('Bearer ', '')).strip()
+    token = encode(payload={"header": str(authorization_header.replace('Bearer ', '')).strip()}, key=JWT_SECRET, algorithm="HS256")
     
     try:
         payload = decode(jwt=token, key=JWT_SECRET, algorithms=["HS256"])
