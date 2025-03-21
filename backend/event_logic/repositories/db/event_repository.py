@@ -1,5 +1,5 @@
 from persistent.db.tables import Event, User, RegisteredUsers
-from infrastructure.db.connect import sqlite_connection
+from infrastructure.db.connect import pg_connection
 from sqlalchemy import insert, select, update, delete
 from services.mail_service import send_message 
 from sqlalchemy.exc import ArgumentError 
@@ -11,7 +11,7 @@ class EventRepository:
 
     # подключение к sqlite
     def __init__(self):
-        self._sessionmaker = sqlite_connection()
+        self._sessionmaker = pg_connection()
 
     # создание мероприятия
     async def post_event(self, name: str, start_datetime: datetime, end_datetime: datetime, 

@@ -6,3 +6,5 @@ PyJWT==2.9.0
 python-dotenv==1.0.1
 aiosqlite==0.20.0
 pydantic_settings==2.6.0
+loguru==0.7.3
+asyncpg==0.30.0
