@@ -1,19 +1,16 @@
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, Text, DateTime
 from datetime import datetime
 import uuid
 
 Base = declarative_base()
 
-# возваращает uuid в строковом виде
-def _uuid4_to_str() -> str:
-    return str(uuid.uuid4())
-
 # класс для добавления столбца id в таблицу
 class WithId:
     __abstract__ = True
 
-    id = Column(Text, default=_uuid4_to_str, primary_key=True)
+    id = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True)
 
 
 class With_created_at():
