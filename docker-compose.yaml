@@ -2,13 +2,15 @@ services:
   pybackend:
     restart: always
 
+    env_file: .env
+
     build:
       context: backend/event_logic
       dockerfile: Dockerfile
     ports:
       - 8000:8000
     networks:
-      - bridgenetwork
+      - events_network
 
   gobackend:
     restart: always
@@ -19,7 +21,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - bridgenetwork
+      - events_network
 
   frontend:
     restart: no
@@ -30,9 +32,26 @@ services:
     ports:
       - 4173:4173
     networks:
-      - bridgenetwork
+      - events_network
+
+  postgres:
+    image: postgres:17.0
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${APP_PG__USER}
+      POSTGRES_PASSWORD: ${APP_PG__PASSWORD}
+      POSTGRES_DB: ${APP_PG__DATABASE}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./backend/event_logic/init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./data/pg/:/var/lib/postgresql/data/"
+    networks:
+      - events_network
+
 
 
 networks:
-  bridgenetwork:
+  events_network:
     driver: bridge
