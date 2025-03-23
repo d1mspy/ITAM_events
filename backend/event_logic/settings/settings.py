@@ -1,6 +1,5 @@
 import multiprocessing as mp
 
-from loguru import logger
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from config.config import PG_USER, PG_HOST, PG_PORT, PG_PASSWORD, DB
@@ -28,5 +27,4 @@ class _Settings(BaseSettings):
     
     
 settings = _Settings()
-logger.info("settings.inited {}", settings.model_dump_json())
  
