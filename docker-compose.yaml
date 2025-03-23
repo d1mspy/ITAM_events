@@ -7,8 +7,8 @@ services:
     build:
       context: backend/event_logic
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000
+    depends_on:
+      - postgres
     networks:
       - events_network
 
@@ -29,8 +29,6 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
-    ports:
-      - 4173:4173
     networks:
       - events_network
 
@@ -50,7 +48,18 @@ services:
     networks:
       - events_network
 
-
+  nginx:
+    image: nginx:1.25.4-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/:/frontend
+    depends_on:
+      - pybackend
+      - frontend
+    networks:
+      - events_network
 
 networks:
   events_network:

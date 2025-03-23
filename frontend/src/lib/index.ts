@@ -1,4 +1,4 @@
-export const apiUrl = "http://localhost:8000"
+export const apiUrl = "/api"
 export let token: string | null = null;
 export async function login(username: string, password:string){
   let promise =  fetch(`${apiUrl}/login`,{
