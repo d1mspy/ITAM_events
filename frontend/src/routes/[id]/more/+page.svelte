@@ -20,7 +20,7 @@
 	let object: any;
 	object = null;
 	let id = $page.params.id;
-	const apiUrl1 = `${apiUrl}/${id}`;
+	const apiUrl1 = `${apiUrl}/list/${id}`;
 	async function fetchObject() {
 		try {
 			const response = await fetch(apiUrl1, {

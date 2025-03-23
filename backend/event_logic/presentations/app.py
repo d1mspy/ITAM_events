@@ -43,18 +43,18 @@ class Event(BaseModel):
     content: str
     category: str
     tags: str
-    max_people: int
+    max_people: int = 0
 
 
 # разрешение запросов из сторонних сервисов(для фронтенда)
-def allow_requests() -> None:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"]
-    )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/list")

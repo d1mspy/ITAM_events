@@ -36,7 +36,7 @@
 
 	async function saveObject(newObject: any) {
 		try {
-			const response = await fetch(`${apiUrl}`, {
+			const response = await fetch(`${apiUrl}/list`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json;charset=utf-8" },
 				body: JSON.stringify(newObject)

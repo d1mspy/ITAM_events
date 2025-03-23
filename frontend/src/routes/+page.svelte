@@ -7,7 +7,7 @@
 	objects = [];
 	async function fetchObjects() {
 		try {
-			const response = await fetch(`${apiUrl}`, {
+			const response = await fetch(`${apiUrl}/list`, {
 				credentials: "same-origin",
 				method: "GET",
 				headers: { "Content-Type": "application/json" }
@@ -40,7 +40,7 @@
 
 	async function deleteEvent(id: number) {
 		try {
-			const response = await fetch(`${apiUrl}/${id}`, {
+			const response = await fetch(`${apiUrl}/list/${id}`, {
 				method: "DELETE",
 				headers: { "Content-Type": "application/json" }
 			});

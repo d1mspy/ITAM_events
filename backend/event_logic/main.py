@@ -1,9 +1,8 @@
-from presentations.app import app, allow_requests
+from presentations.app import app
 import uvicorn
 
 # запуск 
 def main() -> None:
-    allow_requests()
     uvicorn.run(app)
 
 
