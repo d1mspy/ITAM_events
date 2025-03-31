@@ -1,0 +1,45 @@
+.field {
+    width: 302px;
+    height: 43px;
+    border: 1px solid #808080;
+    border-radius: 10px;
+    padding-left: 22px;
+    padding-right: 25px;
+    font-size: 18px;
+    font-family: 'TT Norms Pro Regular';
+}
+
+.labelText {
+    font-size: 18px;
+    font-family: 'TT Norms Pro Regular';
+    color: #808080;
+    opacity: 0;
+    position: relative;
+    top: -3.7rem; 
+    margin: 0 0 0 7px;
+    padding: 0 3px;
+    width: fit-content;
+    background: #FFFFFF;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    left:13px;
+}
+
+.FieldInput input.field:focus + .labelText {
+    opacity: 1;
+}
+
+.FieldInput input.field:focus::placeholder {
+    color: transparent;
+}
+
+.FieldInput input.field {
+    outline: none;
+}
+
+.FieldInput {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    position: static;
+}

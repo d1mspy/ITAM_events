@@ -1,0 +1,10 @@
+.Error {
+    color: #D85757;  
+}
+.BaseText {
+    color: hsla(0, 0%, 0%, 0.5);
+    
+}
+.TextTips {
+    margin-top: 8px;
+}
