@@ -1,8 +1,9 @@
-main {
+.mainLogInSignUP {
     background: linear-gradient(90deg, #facace 0%, #f0dded 100%);
     width: 465px;
     border-radius: 20px;
     overflow: hidden;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .SectionOut {
@@ -38,8 +39,6 @@ main {
 }
 
 
-/* вход
-*/
 .optionOut div {
     background: linear-gradient(90deg, #facace 0%, #f0dded 100%);
     border-bottom-right-radius: 20px;
@@ -56,14 +55,13 @@ main {
     border-top-right-radius: 20px;
 }
 
-body {
-    background: rgb(135, 152, 172);
-    width: 100%;
-}
+
 
 .InOutText {
+    font-family: 'TTNormsPro-Light';
     font-size: 22px;
     color: var(--TextColor);
+    text-decoration: none;
     cursor: pointer;
 }
 

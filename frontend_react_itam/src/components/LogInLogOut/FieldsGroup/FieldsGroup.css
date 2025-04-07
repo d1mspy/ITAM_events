@@ -1,10 +1,13 @@
 .Fields {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     justify-content: center;
 }
 
 .date {
     padding-right: 10px;
+}
+
+.Fields div:not(:first-child) {
+    margin-top: -6px;
 }

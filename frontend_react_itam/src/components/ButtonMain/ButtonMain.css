@@ -1,7 +1,6 @@
 .ButtonMain {
     height: 43px;
     border-radius: 10px;
-    margin-top: 15px;
     background: var(--LightGradient);
     color: var(--TextColor);
     border: None;

@@ -1,0 +1,70 @@
+.mainLogIn {
+    background: linear-gradient(90deg, #f0dded 0%, #E4D5F3 100%);
+    width: 465px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.SectionOutLI {
+    background: white;
+    border-top-right-radius: 20px;
+    display: flex;           /* Включаем flex */
+    justify-content: center; /* Центр по горизонтали */
+    align-items: center;     /* Центр по вертикали */
+    min-height: 292px;       /* Минимальная высота */
+    height: 100%;            /* Растягиваем на всю доступную высоту */
+    box-sizing: border-box;
+}
+
+.HeaderOutLI {
+    display: flex;
+    height: 50px;
+    background: linear-gradient(90deg, #f0dded  0%, #E4D5F3 100%);
+}
+
+.optionOutLI {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 231px;
+}
+
+.optionOutLI div {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.optionOutLI {
+    background: white;
+}
+
+
+.optionOutLI div {
+    background: linear-gradient(90deg, #f0dded  0%, #E4D5F3 100%);
+    border-bottom-left-radius: 20px;
+}
+
+
+.optionOutLI.activeOutLI {
+    background: linear-gradient(90deg, #E4D5F3 0%, #f0dded 100%);
+}
+.optionOutLI.activeOutLI div {
+    background: white;
+    border-radius: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.InOutTextLI {
+    font-family: 'TTNormsPro-Light';
+    font-size: 22px;
+    color: var(--TextColor);
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -1,0 +1,25 @@
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    width: 351px;          
+    margin: 0 auto;          
+}
+
+.centered-group {
+display: flex;
+flex-direction: column;
+align-items: center;  
+width: 100%;
+}
+
+.left-aligned-text {
+width: 100%;         
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    min-height: 100vh;
+}
