@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './BackgroundSignUp.css';
 
-const BackgroundSignUp = ({SectionHeight}) => {
+const BackgroundSignUp = ({SectionMinHeight, children}) => {
     return (
         <main >
             <div className='mainLogInSignUP'>
@@ -14,7 +14,7 @@ const BackgroundSignUp = ({SectionHeight}) => {
                         <div ><Link to="/register" className='InOutText'>Регистрация</Link></div>
                     </div>
                 </header>
-                <section className='SectionOut' style={{ height: SectionHeight }}></section>
+                <section className='SectionOut' style={{ minHeight: SectionMinHeight }}>{children}</section>
             </div>
         </main>
     );

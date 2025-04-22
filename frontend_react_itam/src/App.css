@@ -1,9 +1,10 @@
 :root {
     --TextColor: hsla(0, 0%, 9%, 0.8);
     --AccentTextColor: #7D4FA7;
-    --LightGradient: linear-gradient(90deg, rgb(250, 202, 206) 0%, rgba(200, 170, 231, 1) 100%);
+    --LightGradient: linear-gradient(90deg, rgba(250, 202, 206, 0.500) 0%, rgba(200, 170, 231, 0.5) 100%);
     --BrightGradient: linear-gradient(90deg, rgba(252, 205, 205, 1) 0%, rgba(200, 170, 231, 1) 100%);
     --ErrorColor: #D85757;
+    --wfe: rgb(250, 202, 206);
 }
 
 @font-face {
@@ -50,7 +51,7 @@ h1,h2,h3,h4,h5,h6 {
     padding: 0;
 }
 h1 {
-    font-family: 'Cygre-Medium-BF63eeebf75cc00';
+    font-family: 'Cygre Medium';
     font-size: 55px;
 }
 h2{

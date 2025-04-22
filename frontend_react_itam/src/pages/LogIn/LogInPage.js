@@ -4,7 +4,6 @@ import './LogInPage.css';
 import BackgroundLogIn from '../../components/LogInLogOut/BackgroundLogIn/BackgroundLogIn';
 import FieldsGroup from '../../components/LogInLogOut/FieldsGroup/FieldsGroup';
 import ButtonMain from '../../components/ButtonMain/ButtonMain';
-import BackgroundSignUp from '../../components/LogInLogOut/BackgroundSignUp/BackgroundSignUp';
 import TextTipsLogInOut from '../../components/LogInLogOut/TextTipsLogInOut/TextTipsLogInOut';
 
 

@@ -9,11 +9,11 @@
 .SectionOutLI {
     background: white;
     border-top-right-radius: 20px;
-    display: flex;           /* Включаем flex */
-    justify-content: center; /* Центр по горизонтали */
-    align-items: center;     /* Центр по вертикали */
-    min-height: 292px;       /* Минимальная высота */
-    height: 100%;            /* Растягиваем на всю доступную высоту */
+    display: flex;           
+    justify-content: center; 
+    align-items: center;     
+    min-height: 292px;       
+    height: 100%;            
     box-sizing: border-box;
 }
 

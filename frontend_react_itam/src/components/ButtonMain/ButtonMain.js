@@ -23,7 +23,7 @@ const ButtonMain = ({width, children, iconBefore, iconAfter, iconBeforeWidth, ic
                         style={{
                             width: iconAfterWidth, 
                             height: iconAfterHeight,
-                            marginLeft: '8px', 
+                            marginLeft: '3px', 
                         }} 
                     />
                 )}

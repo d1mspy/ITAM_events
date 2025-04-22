@@ -1,0 +1,157 @@
+.nameAndMail {
+    display: flex;
+    gap: 108px;
+    align-items: center;
+}
+.NameLastName {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.NameLastName_Text {
+    font-family: 'Cygre Medium';
+    color: hsla(0, 0%, 9%, 0.8);
+}
+.h4NormsPro {
+    font-family: 'TTNormsPro-Light', sans-serif;
+}
+
+.labelP{
+    font-family: 'TTNormsPro-Light', sans-serif;
+    font-size: 30px;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+.labelUnderInput {
+
+}
+
+.personalAccountBackGround {
+    background: -webkit-linear-gradient(225deg, rgb(230, 206, 241), rgb(239, 227, 242), rgb(205, 210, 238));
+    background: -moz-linear-gradient(225deg, rgb(230, 206, 241), rgb(239, 227, 242), rgb(205, 210, 238));
+    background: linear-gradient(225deg, rgb(230, 206, 241), rgb(239, 227, 242), rgb(205, 210, 238));
+    height: 100%;
+    min-height: 100vh; 
+    background-attachment: fixed;
+    background-size: cover;
+}
+.personalAccount {
+    max-width: 1204px; 
+    width: 100%; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+    box-sizing: border-box; 
+    padding-top: 75px;
+    height: 100%;
+}
+
+.MainUserInfoBlock {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 92px;
+}
+.accounPhoto {
+    width: 140px;
+    height: 140px;
+    background-color:#FFFFFF;
+    border-radius: 100px;
+}
+.infoFields {
+    font-size: 28px;
+    font-family: 'TT Norms Pro Regular';
+    width: 100%;
+    max-width: 513px;
+    margin: 0 auto;
+    height: 62px;
+    padding-left: 20px;
+    padding-right: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border: none;
+    box-sizing: border-box;
+}
+
+.infoFields:active {
+    border-color: transparent;
+    border: none;
+}
+
+.arrow-above-input {
+    width: 38px;
+    height: 26px;
+    margin-bottom: 21px; 
+    align-self: flex-start; 
+    transform: rotate(0deg);
+    filter: invert(55%) sepia(4%) saturate(16%) hue-rotate(22deg) brightness(91%) contrast(93%);
+    cursor: pointer;
+}
+
+.MainInfotmation {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.FieldsUserInformation_fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px 116px; 
+    width: 100%;
+    max-width: 1204px;
+}
+
+.FieldsUserInformation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 53px;
+    align-items: center;
+}
+.saveInformationEdit {
+    width: 316px;
+    height: 62px;
+    font-family: 'TTNormsPro-Light', sans-serif;
+    border: none;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    color: hsla(0, 0%, 9%, 0.8);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    font-size: 25px;
+}
+.saveInformationEdit:hover {
+    transition: 0.4s;
+    cursor: pointer;
+}
+.saveInformationEdit:active {
+    background-color:rgba(201, 170, 231, 0.304);
+}
+.saveInformationEdit.active {
+    color:#ffffff;
+}
+
+@media (max-width: 850px) {
+    .FieldsUserInformation_fields {
+      grid-template-columns: 1fr;
+    }
+    .MainUserInfoBlock {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 92px;
+    }
+    .nameAndMail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+  }
+
+
+
+
+
+

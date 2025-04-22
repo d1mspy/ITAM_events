@@ -12,7 +12,7 @@
 .labelText {
     font-size: 18px;
     font-family: 'TT Norms Pro Regular';
-    color: #808080;
+    color: hsla(0, 0%, 9%, 0.4);
     opacity: 0;
     position: relative;
     top: -3.7rem; 
@@ -44,5 +44,16 @@
     position: static;
     padding-bottom: 0 ;
     margin-bottom: 0 ;
-    
 }
+
+
+.FieldInput input.field::placeholder {
+    opacity: 0.4;
+    color: #171717; 
+  }
+  
+
+.FieldInput input.field::-webkit-input-placeholder { opacity: 0.4; }
+.FieldInput input.field::-moz-placeholder { opacity: 0.4; }
+.FieldInput input.field:-ms-input-placeholder { opacity: 0.4; }
+.FieldInput input.field:-moz-placeholder { opacity: 0.4; }
