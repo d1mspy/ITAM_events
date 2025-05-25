@@ -1,0 +1,78 @@
+:root {
+  --TextColor: hsla(0, 0%, 9%, 0.8);
+  --AccentTextColor: #7D4FA7;
+  --LightGradient: linear-gradient(90deg, rgba(250, 202, 206, 0.500) 0%, rgba(200, 170, 231, 0.5) 100%);
+  --BrightGradient: linear-gradient(90deg, rgba(252, 205, 205, 1) 0%, rgba(200, 170, 231, 1) 100%);
+  --ErrorColor: #D85757;
+  --wfe: rgb(250, 202, 206);
+}
+
+@font-face {
+  font-family: 'Cygre Medium';
+  src: url('./assets/fonts/Cygre-Medium-BF63eeebf75cc00.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cygre Book';
+  src: url('./assets/fonts/Cygre-Book-BF63eeebf814697.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTNormsPro-Light';
+  src: url('./assets/fonts/TTNormsPro-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro Medium';
+  src: url('./assets/fonts/TTNormsPro-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro Regular';
+  src: url('./assets/fonts/TTNormsPro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {
+  background: #FFFFFF;
+}
+h1,h2,h3,h4,h5,h6,p,a {
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-family: 'Cygre Medium';
+  font-size: 55px;
+}
+h2{
+  font-size: 40px;
+}
+h3 {
+  font-size: 35px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-family: 'TTNormsPro-Light', sans-serif;
+  font-size: 18px;
+  
+}
+h6 {
+  font-size: 15px;
+}
+a {
+  text-decoration-skip-ink: auto;
+  text-decoration: none;
+  color: currentColor;
+}

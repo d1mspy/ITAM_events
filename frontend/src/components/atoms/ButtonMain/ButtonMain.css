@@ -1,0 +1,10 @@
+.ButtonMain {
+    height: 43px;
+    border-radius: 10px;
+    background: var(--LightGradient);
+    color: var(--TextColor);
+    border: None;
+    font-size: 18px;
+    font-family: 'TT Norms Pro Regular';
+    cursor: pointer;
+}

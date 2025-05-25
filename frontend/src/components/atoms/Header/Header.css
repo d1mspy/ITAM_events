@@ -1,0 +1,13 @@
+.Header__inner {
+    width: 95%;
+    height: 91px;
+    background: var(--LightGradient);
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 37px;
+}
+.logo {
+    width: 79px;
+    height: 39px;
+}

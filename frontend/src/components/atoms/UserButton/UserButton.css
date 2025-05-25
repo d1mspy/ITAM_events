@@ -1,0 +1,122 @@
+.BtnUserButton {
+    background-color: #FFFFFF;
+    /* width: 54px;
+    height: 54px; */
+    width: 100%;
+    height: 100%;
+    border-radius: 27px;
+    border: None;
+    background-image: url('/public/assets/user.svg');
+    background-position: center;
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.dropdown-menu {
+    width: 188px;
+    border-radius:10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+    gap: 10px;
+    display: none;
+    z-index: 3;
+    right: 0;
+    top: calc(100% + 19px);
+    position: absolute;
+    box-shadow: 2px 2px 11.3px 0 rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+.dropdown-menu a:hover {
+    color: var(--AccentTextColor);
+}
+.button-container:hover .dropdown-menu {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+    pointer-events: auto; 
+    transition-delay: 0.1s;
+}
+.button-container .dropdown-menu {
+    transition: opacity 0.3s 0.2s, transform 0.3s 0.2s, visibility 0s 0.5s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-button-wrapper {
+    display: inline-block;
+}
+
+.button-container {
+    position: relative;
+    width: 54px;
+    height: 54px;
+}
+
+.dropdown-menu__helpBlockSecond {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.dropdown-menu__helpBlockFirst {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notAuth {
+    height: 63px;
+}
+.Auth {
+    height: 178px;
+}
+
+.dropdown-line {
+    width: 168px;
+    height: 1.5px;
+    background-color: #D9D9D9;
+}
+
+.dropdown-menu__name {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-family: 'Cygre Medium';
+    font-size: 24px;
+}
+
+.dropdown-menu__mail {
+    font-family:'TT Norms Pro Regular';
+    font-size: 16px;
+}
+
+.dropdown-menu__toAuth {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+    font-family:'TT Norms Pro Regular';
+    font-size: 19px;
+}
+
+.dropdown-menu__profile, .dropdown-menu__exite {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+    font-family:'TT Norms Pro Regular';
+    font-size: 19px;
+}
+
+.dropdown-menu__img {
+    width: 24px;
+    height: auto;
+}
