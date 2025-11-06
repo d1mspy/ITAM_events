@@ -1,8 +1,8 @@
 import React from 'react'
 import './App.css'
-import ButtonMain from './components/atoms/ButtonMain/ButtonMain.jsx';
 import UserButton from './components/atoms/UserButton/UserButton.jsx';
 import AdminHeader from './components/atoms/Header/Header.jsx';
+import Profile from './components/pages/Profile/Profile.jsx';
 
 function App() {
 
@@ -14,6 +14,7 @@ function App() {
                 iconAfterHeight="11px"> Далее </ButtonMain> */}
       <UserButton/>
       <AdminHeader/>
+      <Profile/>
     </div>
 
   );

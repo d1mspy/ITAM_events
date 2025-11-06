@@ -8,8 +8,21 @@ import (
 	"net/http"
 )
 
-func main() {
+func enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+func main() {
 	cfg := config.LoadConfig()
 
 	database, err := db.NewDB("myapp.db")
@@ -19,8 +32,8 @@ func main() {
 
 	authHandler := handlers.NewAuthHandler(database, cfg)
 
-	http.HandleFunc("/register", authHandler.RegisterHandler)
-	http.HandleFunc("/login", authHandler.LoginHandler)
+	http.Handle("/register", enableCORS(http.HandlerFunc(authHandler.RegisterHandler)))
+	http.Handle("/login", enableCORS(http.HandlerFunc(authHandler.LoginHandler)))
 
 	log.Println("Сервер запущен на :8080")
 	err = http.ListenAndServe(":8080", nil)

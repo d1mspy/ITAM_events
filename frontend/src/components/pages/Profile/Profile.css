@@ -72,11 +72,13 @@
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     border: none;
     box-sizing: border-box;
+    outline: none;
 }
 
 .infoFields:active {
     border-color: transparent;
     border: none;
+    outline: none;
 }
 
 .arrow-above-input {
@@ -149,7 +151,6 @@
         gap: 20px;
     }
   }
-
 
 
 
